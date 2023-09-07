@@ -62,7 +62,18 @@ contract NFT is ERC721 {
     }
 
     function mint() external payable {
-        require(msg.value >= price, "Insufficient funds");
         _safeMint(msg.sender, ++totalSupply);
+    }
+
+    function burn(uint256 tokenId) external {
+        require(
+            ownerOf(tokenId) == msg.sender,
+            "Only the owner of the token can burn it."
+        );
+        _burn(tokenId);
+    }
+
+    function _burn(uint256 tokenId) internal override(ERC721) {
+        super._burn(tokenId);
     }
 }
