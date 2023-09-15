@@ -1,12 +1,15 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.9;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import "reference/src/lib/ERC6551AccountLib.sol";
-import "reference/src/interfaces/IERC6551Registry.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract NFT is ERC721 {
-    /*//////////////////////////////////////////////////////////////
+import "https://github.com/erc6551/reference/blob/v0.2.0-deployment/src/interfaces/IERC6551Registry.sol";
+import "https://github.com/erc6551/reference/blob/v0.2.0-deployment/src/lib/ERC6551AccountLib.sol";
+
+
+contract NFT is ERC721, Ownable {
+        /*//////////////////////////////////////////////////////////////
                             STATE VARIABLES
     //////////////////////////////////////////////////////////////*/
     uint256 public totalSupply; // The total number of tokens minted on this contract
@@ -14,7 +17,6 @@ contract NFT is ERC721 {
     IERC6551Registry public immutable registry; // The 6551 registry address
     uint public immutable chainId = block.chainid; // The chainId of the network this contract is deployed on
     address public immutable tokenContract = address(this); // The address of this contract
-    uint salt = 0; // The salt used to generate the account address
 
     /*//////////////////////////////////////////////////////////////
                               CONSTRUCTOR
@@ -22,7 +24,7 @@ contract NFT is ERC721 {
     constructor(
         address _implementation,
         address _registry
-    ) ERC721("TokenBoundAccountNFT", "TBANFT") {
+    ) ERC721("TokenBoundAccountNFT2", "TBANFT2") {
         implementation = _implementation;
         registry = IERC6551Registry(_registry);
     }
@@ -39,7 +41,7 @@ contract NFT is ERC721 {
                 chainId,
                 tokenContract,
                 tokenId,
-                salt
+                0
             );
     }
 
@@ -50,7 +52,7 @@ contract NFT is ERC721 {
                 chainId,
                 tokenContract,
                 tokenId,
-                salt,
+                0,
                 ""
             );
     }
@@ -61,19 +63,7 @@ contract NFT is ERC721 {
         require(success, "Failed to send ETH");
     }
 
-    function mint() external payable {
+    function safeMint() public onlyOwner {
         _safeMint(msg.sender, ++totalSupply);
-    }
-
-    function burn(uint256 tokenId) external {
-        require(
-            ownerOf(tokenId) == msg.sender,
-            "Only the owner of the token can burn it."
-        );
-        _burn(tokenId);
-    }
-
-    function _burn(uint256 tokenId) internal override(ERC721) {
-        super._burn(tokenId);
     }
 }

@@ -5,8 +5,9 @@ import "@openzeppelin/contracts/utils/introspection/IERC165.sol";
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "@openzeppelin/contracts/utils/cryptography/SignatureChecker.sol";
 //6551 references
-import "reference/src/interfaces/IERC6551Account.sol";
-import "reference/src/lib/ERC6551AccountLib.sol";
+import "https://github.com/erc6551/reference/blob/v0.2.0-deployment/src/interfaces/IERC6551Account.sol";
+import "https://github.com/erc6551/reference/blob/v0.2.0-deployment/src/lib/ERC6551AccountLib.sol";
+import "https://github.com/erc6551/reference/blob/v0.2.0-deployment/src/ERC6551Registry.sol";
 
 contract SimpleERC6551Account is IERC165, IERC1271, IERC6551Account {
     uint256 public nonce;
