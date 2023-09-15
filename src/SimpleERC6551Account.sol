@@ -19,14 +19,13 @@ contract SimpleERC6551Account is IERC165, IERC1271, IERC6551Account {
         uint256 value,
         bytes calldata data
     ) external payable returns (bytes memory result) {
-        require(msg.sender == owner(), "Not token owner"); // Check if person making the call for this account has control of the account.
+       // Fill: Check if person making the call for this account has control of the account.
 
         ++nonce;
 
         emit TransactionExecuted(to, value, data);
 
-        bool success;
-        (success, result) = to.call{value: value}(data);
+        // Fill
 
         if (!success) {
             assembly {
@@ -34,7 +33,8 @@ contract SimpleERC6551Account is IERC165, IERC1271, IERC6551Account {
             }
         }
     }
-
+    
+    // Explain
     function token()
         external
         view
@@ -48,10 +48,7 @@ contract SimpleERC6551Account is IERC165, IERC1271, IERC6551Account {
     }
 
     function owner() public view returns (address) {
-        (uint256 chainId, address tokenContract, uint256 tokenId) = this.token();
-        if (chainId != block.chainid) return address(0);
-
-        return IERC721(tokenContract).ownerOf(tokenId);
+        // Fill
     }
 
     // IERC165

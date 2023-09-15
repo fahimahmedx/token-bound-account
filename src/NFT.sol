@@ -13,20 +13,20 @@ contract NFT is ERC721, Ownable {
                             STATE VARIABLES
     //////////////////////////////////////////////////////////////*/
     uint256 public totalSupply; // The total number of tokens minted on this contract
+    address public immutable tokenContract = address(this); // The address of this contract
+
+    // Explain below
     address public immutable implementation; // The SimpleERC6551Account address
     IERC6551Registry public immutable registry; // The 6551 registry address
     uint public immutable chainId = block.chainid; // The chainId of the network this contract is deployed on
-    address public immutable tokenContract = address(this); // The address of this contract
 
     /*//////////////////////////////////////////////////////////////
                               CONSTRUCTOR
     //////////////////////////////////////////////////////////////*/
     constructor(
-        address _implementation,
-        address _registry
-    ) ERC721("TokenBoundAccountNFT2", "TBANFT2") {
-        implementation = _implementation;
-        registry = IERC6551Registry(_registry);
+        // Fill Parameters
+    ) ERC721("HackTheNorthNFT", "HTNNFT") {
+        // Fill
     }
 
     /*//////////////////////////////////////////////////////////////
@@ -35,32 +35,15 @@ contract NFT is ERC721, Ownable {
 
 
     function getAccount(uint tokenId) public view returns (address) {
-        return
-            registry.account(
-                implementation,
-                chainId,
-                tokenContract,
-                tokenId,
-                0
-            );
+        // Fill
     }
 
     function createAccount(uint tokenId) public returns (address) {
-        return
-            registry.createAccount(
-                implementation,
-                chainId,
-                tokenContract,
-                tokenId,
-                0,
-                ""
-            );
+        // Fill
     }
 
     function addEth(uint tokenId) external payable {
-        address account = getAccount(tokenId);
-        (bool success, ) = account.call{value: msg.value}("");
-        require(success, "Failed to send ETH");
+        // Fill
     }
 
     function safeMint() public onlyOwner {
